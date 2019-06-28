@@ -7,6 +7,10 @@ public class TracedPoint extends Point {
     }
 
     // Your move method goes here.
+    public void move(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public static void main(String[] args) {
         TracedPoint p1 = new TracedPoint(5, 6);
