@@ -77,7 +77,12 @@ public class User implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        return getId() - ((User)o).getId();
+        int compare = getId() - ((User)o).getId();
+        if (!(compare == 0)) {
+            return compare;
+        } else {
+            return getName().compareTo(((User)o).getName());
+        }
     }
 
     public static void main(String[] args) {
