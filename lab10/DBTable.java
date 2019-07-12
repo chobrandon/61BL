@@ -48,22 +48,17 @@ public class DBTable<T> {
      */
     public <R extends Comparable<R>> List<T> getOrderedBy(Function<T, R> getter) {
         ArrayList<T> list = new ArrayList();
-        for (int i = 0; i < entries.size(); i += 1) {
+        list.add(entries.get(0));
+        for (int i = 1; i < entries.size(); i += 1) {
             T thing = entries.get(i);
             R item = getter.apply(thing);
-            if (i == 0) {
-                list.add(thing);
+            int index = 0;
+            int compare = item.compareTo(getter.apply(list.get(index)));
+            while (compare > 0 && index < list.size()) {
+                index += 1;
+                compare = item.compareTo(getter.apply(list.get(index)));
             }
-            for (int j = 0; j < i; j += 1) {
-                if (i == 1) {
-                    continue;
-                }
-                int compare = item.compareTo(getter.apply(list.get(j)));
-                if (compare <= 0) {
-                    list.add(j, thing);
-                }
-            }
-            list.add(thing);
+            list.add(index, thing);
         }
         return list;
     }
