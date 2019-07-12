@@ -56,7 +56,7 @@ public class DBTable<T> {
             }
             for (int j = 0; j < i; j += 1) {
                 if (i == 1) {
-                    break;
+                    continue;
                 }
                 int compare = item.compareTo(getter.apply(list.get(j)));
                 if (compare <= 0) {
