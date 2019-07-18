@@ -140,27 +140,57 @@ public class Lockdown implements Iterable<String[]> {
         int moveDir = 0;
 
         /* Direction in which I am attempting to block. */
-        int blockDir = -1;
+        int blockDir = 0;
 
         /* Constructor which takes in FROM, a position to move from.
          */
         MoveIterator(int[] from) {
-            // FIXME
+            this.from = from;
         }
 
         @Override
         public boolean hasNext() {
-            return true;  // FIXME
+            nextPos();
+            if (moveDir == 8) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         /* A helper method to calculate the next valid position. */
         private void nextPos() {
-            // FIXME
+            boolean available = false;
+            boolean available2 = false;
+            for (; moveDir < 8 ; moveDir += 1) {
+                int[] to = getDirection(from, moveDir);
+                available = moveAvailable(from, to, from);
+                if (available) {
+                    for (; blockDir < 8 ; blockDir += 1) {
+                        if (!available2) {
+                            int[] block = getDirection(to, blockDir);
+                            available2 = moveAvailable(to, block, from);
+                            if (available2) {
+                                blockDir += 1;
+                                return;
+                            }
+                        }
+                    }
+                    blockDir = 0;
+                }
+            }
         }
 
         @Override
         public String[] next() {
-            return null;  // FIXME
+            String[] nextMove = new String[2];
+            int[] to = getDirection(from, moveDir);
+            String pos = getPosition(to);
+            nextMove[0] = pos;
+            int[] block = getDirection(to, blockDir - 1);
+            String blockPos = getPosition(block);
+            nextMove[1] = blockPos;
+            return nextMove;
         }
     }
     
